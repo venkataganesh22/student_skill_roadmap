@@ -74,6 +74,21 @@ st.markdown("""
 🎓 Student Skill Roadmap Generator
 </h1>
 """, unsafe_allow_html=True)
+st.markdown("""
+<style>
+
+[data-testid="stAppViewContainer"]{
+    background-image: 
+    linear-gradient(rgba(15,23,42,0.9),rgba(2,6,23,0.95)),
+    url("https://images.unsplash.com/photo-1555066931-4365d14bab8c");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+</style>
+""", unsafe_allow_html=True)
 
 # ---------------- Load dataset ----------------
 @st.cache_data
