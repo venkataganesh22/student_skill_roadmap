@@ -118,6 +118,51 @@ small, .stCaption { color: rgba(229,231,235,.75) !important; }
   overflow: hidden;
   border: 1px solid rgba(255,255,255,0.10);
 }
+/* Force all text to be visible */
+body, p, span, label, div {
+    color: #e5e7eb !important;
+}
+
+/* Streamlit labels */
+label {
+    color: #e5e7eb !important;
+    font-weight: 600;
+}
+
+/* Selectbox text */
+[data-baseweb="select"] span {
+    color: #e5e7eb !important;
+}
+
+/* Input text */
+input, textarea {
+    color: #ffffff !important;
+}
+
+/* Slider text */
+.stSlider span {
+    color: #e5e7eb !important;
+}
+
+/* Tab text */
+.stTabs [data-baseweb="tab"] {
+    color: #e5e7eb !important;
+}
+
+/* Expander text */
+.streamlit-expanderHeader {
+    color: #e5e7eb !important;
+}
+
+/* Metric text */
+[data-testid="stMetricValue"] {
+    color: white !important;
+}
+
+/* Info / success / warning text */
+.stAlert {
+    color: #ffffff !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
