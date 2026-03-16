@@ -18,11 +18,21 @@ st.markdown("""
 <style>
 
 /* ===== MAIN APP BACKGROUND ===== */
+/* ===== BACKGROUND ===== */
 .stApp{
-    background: radial-gradient(1200px 600px at 10% 0%, rgba(99,102,241,.25), transparent 60%),
-                radial-gradient(1000px 600px at 90% 10%, rgba(16,185,129,.18), transparent 55%),
-                linear-gradient(180deg,#0b1220 0%,#070b14 100%);
-    color:#e5e7eb;
+    background: linear-gradient(135deg,#1e293b,#0f172a,#020617);
+    color:#e2e8f0;
+}
+
+/* ===== HEADINGS ===== */
+h1,h2,h3{
+    color:#f8fafc !important;
+    font-weight:700;
+}
+
+/* ===== LABEL TEXT ===== */
+label{
+    color:#cbd5f5 !important;
 }
 
 /* ===== LAYOUT ===== */
