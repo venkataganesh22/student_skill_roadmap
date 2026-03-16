@@ -16,175 +16,132 @@ st.set_page_config(page_title="Student Skill Roadmap", layout="centered")
 # ---------------- UI THEME (HTML/CSS) ----------------
 st.markdown("""
 <style>
-/* ===== Page background + font ===== */
+
+/* ===== MAIN APP BACKGROUND ===== */
 .stApp{
-  background: radial-gradient(1200px 600px at 10% 0%, rgba(99,102,241,.25), transparent 60%),
-              radial-gradient(1000px 600px at 90% 10%, rgba(16,185,129,.18), transparent 55%),
-              linear-gradient(180deg, #0b1220 0%, #070b14 100%);
-  color: #e5e7eb;
+    background: radial-gradient(1200px 600px at 10% 0%, rgba(99,102,241,.25), transparent 60%),
+                radial-gradient(1000px 600px at 90% 10%, rgba(16,185,129,.18), transparent 55%),
+                linear-gradient(180deg,#0b1220 0%,#070b14 100%);
+    color:#e5e7eb;
 }
 
-/* Wider + clean spacing */
+/* ===== LAYOUT ===== */
 .block-container{
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  max-width: 1050px;
+    max-width:1050px;
+    padding-top:2rem;
+    padding-bottom:2rem;
 }
 
-/* Hide streamlit menu/footer */
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-header {visibility: hidden;}
+/* Hide streamlit default UI */
+#MainMenu{visibility:hidden;}
+footer{visibility:hidden;}
+header{visibility:hidden;}
 
-/* ===== Typography ===== */
-h1, h2, h3 { letter-spacing: .2px; }
-small, .stCaption { color: rgba(229,231,235,.75) !important; }
 
-/* ===== Cards ===== */
+/* ===== TEXT ===== */
+body,p,span,label,div{
+    color:#e5e7eb !important;
+}
+
+h1,h2,h3{
+    letter-spacing:.3px;
+}
+
+/* ===== CARDS ===== */
 .card{
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 18px;
-  padding: 18px 18px;
-  box-shadow: 0 12px 35px rgba(0,0,0,0.35);
-  margin-bottom: 14px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.10);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:16px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.35);
 }
 
 .card-title{
-  font-size: 1.15rem;
-  font-weight: 700;
-  margin: 0 0 6px 0;
+    font-size:1.15rem;
+    font-weight:700;
 }
+
 .card-sub{
-  margin: 0;
-  color: rgba(229,231,235,.75);
-  font-size: .95rem;
+    font-size:.95rem;
+    color:#9ca3af;
 }
 
-/* ===== Inputs ===== */
-.stTextInput input, .stNumberInput input, .stTextArea textarea{
-  border-radius: 12px !important;
-  border: 1px solid rgba(255,255,255,0.14) !important;
-  background: rgba(255,255,255,0.06) !important;
-}
-.stSelectbox [data-baseweb="select"]{
-  border-radius: 12px !important;
-  background: rgba(255,255,255,0.06) !important;
-  border: 1px solid rgba(255,255,255,0.14) !important;
+
+/* ===== INPUTS ===== */
+input, textarea{
+    background:rgba(255,255,255,0.05) !important;
+    border:1px solid rgba(255,255,255,0.15) !important;
+    color:white !important;
+    border-radius:10px !important;
 }
 
-/* Sliders */
-.stSlider [data-baseweb="slider"]{
-  padding-top: 6px;
+
+/* ===== SELECTBOX ===== */
+[data-baseweb="select"]{
+    background:rgba(255,255,255,0.05) !important;
+    border-radius:10px !important;
 }
 
-/* ===== Buttons ===== */
+[data-baseweb="menu"]{
+    background:#0b1220 !important;
+}
+
+[data-baseweb="menu"] div{
+    color:white !important;
+}
+
+[data-baseweb="menu"] div:hover{
+    background:rgba(99,102,241,0.25) !important;
+}
+
+
+/* ===== BUTTON ===== */
 .stButton button{
-  width: 100%;
-  border-radius: 14px;
-  padding: 11px 14px;
-  border: 1px solid rgba(255,255,255,0.18);
-  background: linear-gradient(135deg, rgba(99,102,241,.95), rgba(16,185,129,.85));
-  color: white;
-  font-weight: 800;
+    width:100%;
+    border-radius:12px;
+    padding:10px;
+    font-weight:700;
+    border:1px solid rgba(255,255,255,0.2);
+    background:linear-gradient(135deg,#6366f1,#10b981);
+    color:white;
 }
+
 .stButton button:hover{
-  transform: translateY(-1px);
-  filter: brightness(1.05);
+    transform:translateY(-1px);
+    filter:brightness(1.1);
 }
 
-/* ===== Tabs styling ===== */
-.stTabs [data-baseweb="tab"]{
-  border-radius: 12px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.10);
-}
-.stTabs [aria-selected="true"]{
-  background: rgba(255,255,255,0.10) !important;
-}
 
-/* ===== Metrics ===== */
+/* ===== METRICS ===== */
 [data-testid="stMetric"]{
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 16px;
-  padding: 14px 14px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.10);
+    border-radius:14px;
+    padding:12px;
 }
 
-/* Dataframe look */
+
+/* ===== TABS ===== */
+.stTabs [data-baseweb="tab"]{
+    border-radius:10px;
+    background:rgba(255,255,255,0.05);
+}
+
+.stTabs [aria-selected="true"]{
+    background:rgba(255,255,255,0.12) !important;
+}
+
+
+/* ===== DATAFRAME ===== */
 [data-testid="stDataFrame"]{
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.10);
-}
-/* Force all text to be visible */
-body, p, span, label, div {
-    color: #e5e7eb !important;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.10);
 }
 
-/* Streamlit labels */
-label {
-    color: #e5e7eb !important;
-    font-weight: 600;
-}
-
-/* Selectbox text */
-[data-baseweb="select"] span {
-    color: #e5e7eb !important;
-}
-
-/* Input text */
-input, textarea {
-    color: #ffffff !important;
-}
-
-/* Slider text */
-.stSlider span {
-    color: #e5e7eb !important;
-}
-
-/* Tab text */
-.stTabs [data-baseweb="tab"] {
-    color: #e5e7eb !important;
-}
-
-/* Expander text */
-.streamlit-expanderHeader {
-    color: #e5e7eb !important;
-}
-
-/* Metric text */
-[data-testid="stMetricValue"] {
-    color: white !important;
-}
-
-/* Info / success / warning text */
-.stAlert {
-    color: #ffffff !important;
-}
-/* Dropdown menu background */
-[data-baseweb="popover"] {
-    background-color: #0b1220 !important;
-}
-
-/* Dropdown option text */
-[data-baseweb="menu"] div {
-    color: #ffffff !important;
-    background-color: #0b1220 !important;
-}
-
-/* Dropdown option hover */
-[data-baseweb="menu"] div:hover {
-    background-color: rgba(99,102,241,0.3) !important;
-}
-
-/* Selected option */
-[data-baseweb="select"] span {
-    color: #ffffff !important;
-}
 </style>
 """, unsafe_allow_html=True)
+
 
 
 # ---------------- Load dataset ----------------
