@@ -19,7 +19,7 @@ st.markdown("""
 
 /* ===== APP BACKGROUND ===== */
 .stApp{
-   background: linear-gradient(135deg,#1e3a8a,#0f172a,#020617);
+  background: linear-gradient(135deg,#312e81,#1e293b,#020617);
     color:#e2e8f0;
     font-family: 'Inter', sans-serif;
 }
