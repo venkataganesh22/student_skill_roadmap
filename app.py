@@ -191,6 +191,36 @@ details[data-testid="stExpander"] span{
 #MainMenu, footer, header{
     visibility: hidden;
 }
+/* ===== FINAL EXPANDER FIX (WORKS 100%) ===== */
+
+/* main expander container */
+[data-testid="stExpander"]{
+    background: rgba(4,18,45,0.7) !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    overflow: hidden !important;
+}
+
+/* HEADER (this is your white bar) */
+[data-testid="stExpander"] > div:first-child{
+    background: rgba(255,255,255,0.06) !important;
+    color: #f8fafc !important;
+    padding: 14px 16px !important;
+    font-weight: 600 !important;
+    border-radius: 16px !important;
+}
+
+/* remove hover white flash */
+[data-testid="stExpander"] > div:first-child:hover{
+    background: rgba(255,255,255,0.12) !important;
+}
+
+/* CONTENT */
+[data-testid="stExpander"] > div:nth-child(2){
+    background: rgba(2,6,23,0.6) !important;
+    color: #e5e7eb !important;
+    padding: 12px 16px !important;
+}
 
 </style>
 """, unsafe_allow_html=True)
