@@ -23,8 +23,33 @@ st.markdown("""
 }
 
 /* ===== TEXT COLOR ===== */
-[data-testid="stAppViewContainer"] *{
+/* ===== TEXT (ONLY MAIN BODY) ===== */
+[data-testid="stAppViewContainer"]{
     color:#f8fafc;
+}
+
+/* ===== FIX TABS (Week1 Week2 Week3) ===== */
+.stTabs [data-baseweb="tab"]{
+    background: rgba(255,255,255,0.08);
+    color:#e2e8f0 !important;
+    border-radius:10px;
+    padding:8px 16px;
+}
+
+.stTabs [aria-selected="true"]{
+    background: linear-gradient(135deg,#6366f1,#22c55e) !important;
+    color:white !important;
+}
+
+/* ===== FIX EXPANDER (week content) ===== */
+.streamlit-expanderHeader{
+    color:#f8fafc !important;
+    font-weight:600;
+}
+
+/* ===== FIX MARKDOWN TEXT ===== */
+.stMarkdown{
+    color:#e2e8f0 !important;
 }
 
 /* ===== LABELS ===== */
