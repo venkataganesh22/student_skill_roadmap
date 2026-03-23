@@ -14,6 +14,7 @@ from datetime import date
 # ---------------- Page config ----------------
 st.set_page_config(page_title="Student Skill Roadmap", layout="centered")
 # ---------------- UI THEME (HTML/CSS) ----------------
+
 st.markdown("""
 <style>
 
@@ -89,51 +90,39 @@ div[data-testid="stExpander"] {
     background-color: transparent !important;
 }
 
-/* ===== DOWNLOAD BUTTON FIX ===== */
+/* ===== DOWNLOAD BUTTON ===== */
 .stDownloadButton > button {
     background: #10b981;
     color: white;
     border-radius: 10px;
 }
-st.markdown("""
-<style>
 
-/* ===== INPUT LABELS (VERY IMPORTANT FIX) ===== */
+/* ===== INPUT LABELS FIX ===== */
 label, .stTextInput label, .stNumberInput label, .stSelectbox label {
-    color: #f1f5f9 !important;   /* light color */
+    color: #f1f5f9 !important;
     font-weight: 600;
-    font-size: 15px;
+    font-size: 15px !important;
 }
 
-/* ===== PLACEHOLDER TEXT ===== */
+/* ===== PLACEHOLDER ===== */
 input::placeholder {
     color: #94a3b8 !important;
 }
 
-/* ===== INPUT TEXT COLOR ===== */
-.stTextInput input, 
-.stNumberInput input, 
+/* ===== TEXT AREA ===== */
 .stTextArea textarea {
-    color: #ffffff !important;
-}
-
-/* ===== SELECTBOX TEXT FIX ===== */
-.stSelectbox div {
     color: white !important;
 }
 
-/* ===== RADIO / CHECKBOX LABELS ===== */
+/* ===== RADIO / CHECKBOX ===== */
 .stRadio label, .stCheckbox label {
     color: #e2e8f0 !important;
 }
 
-/* ===== SLIDER LABEL ===== */
+/* ===== SLIDER ===== */
 .stSlider label {
     color: #e2e8f0 !important;
 }
-
-</style>
-""", unsafe_allow_html=True)
 
 </style>
 """, unsafe_allow_html=True)
