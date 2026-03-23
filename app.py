@@ -15,7 +15,7 @@ from datetime import date
 st.set_page_config(page_title="Student Skill Roadmap", layout="centered")
 # ---------------- UI THEME (HTML/CSS) ----------------
 
- st.markdown("""
+ # st.markdown("""
 # <style>
 
 # /* ===== MAIN APP ===== */
@@ -125,7 +125,8 @@ st.set_page_config(page_title="Student Skill Roadmap", layout="centered")
 # }
 
 # </style>
-# """, unsafe_allow_html=True)st.markdown("""
+# """, unsafe_allow_html=True)
+st.markdown("""
 <style>
 
 /* ===== CONTAINER ===== */
