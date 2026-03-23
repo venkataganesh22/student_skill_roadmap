@@ -16,7 +16,7 @@ st.set_page_config(page_title="Student Skill Roadmap", layout="centered")
 # ---------------- UI THEME (HTML/CSS) ----------------
 st.markdown("""
 <div style="
-    background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644');
+    background-image: url('https://images.unsplash.com/photo-1513258496099-48168024aec0');
     background-size: cover;
     background-position: center;
     padding: 60px;
@@ -25,7 +25,7 @@ st.markdown("""
     color: white;
 ">
     <h1>🎯 Student Skill Roadmap</h1>
-    <p>Plan your learning journey smartly</p>
+    <p>Plan your learning journey smarter</p>
 </div>
 """, unsafe_allow_html=True)
 st.markdown("""
