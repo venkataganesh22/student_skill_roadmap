@@ -560,93 +560,102 @@ def show_landing_page():
 #         st.session_state.page = "home"
 # 
     # st.title("🧠 Build Your Roadmap")
-@st.cache_data
-def load_data():
-    df = pd.read_csv("student_performance_final.csv")
-    df.columns = df.columns.str.lower()
-    return df
+    from landing_page import show_landing_page
+ 
+ if "page" not in st.session_state:
+     st.session_state.page = "home"
 
-data = load_data()
+ if st.session_state.page == "home":
+     show_landing_page()
+     st.stop()
+ else:
+      @st.cache_data
+      def load_data():
+        df = pd.read_csv("student_performance_final.csv")
+        df.columns = df.columns.str.lower()
+        return df
+         
+      data = load_data()
 
 # ---------------- Helpers ----------------
-def safe_unique(df, col, fallback):
-    return sorted(df[col].dropna().unique()) if col in df.columns else fallback
-
-def normalize_yes_no(x):
-    if isinstance(x, str):
-        x = x.strip().lower()
-        if x in ("yes", "y", "true", "1"):
-            return "Yes"
-    return "No"
-
-def get_similar_students(df, info):
-    """Simple similarity filter (no ML): same year + branch + interest + skill_level if possible."""
-    f = df.copy()
-
-    # Normalize columns if present
-    if "hostel" in f.columns:
-        f["hostel"] = f["hostel"].apply(normalize_yes_no)
+     def safe_unique(df, col, fallback):
+         return sorted(df[col].dropna().unique()) if col in df.columns else fallback
+ 
+     def normalize_yes_no(x):
+         if isinstance(x, str):
+             x = x.strip().lower()
+             if x in ("yes", "y", "true", "1"):
+                 return "Yes"
+         return "No"
+     
+     def get_similar_students(df, info):
+         """Simple similarity filter (no ML): same year + branch + interest + skill_level if possible."""
+         f = df.copy()
+     
+         # Normalize columns if present
+         if "hostel" in f.columns:
+             f["hostel"] = f["hostel"].apply(normalize_yes_no)
 
     # Apply filters only if columns exist
-    for k, col in [
-        ("year", "year"),
-        ("branch", "branch"),
-        ("interest", "interest"),
-        ("skill_level", "skill_level"),
-    ]:
-        if col in f.columns and k in info and info[k] is not None:
-            f = f[f[col] == info[k]]
+               for k, col in [
+                   ("year", "year"),
+                   ("branch", "branch"),
+                   ("interest", "interest"),
+                   ("skill_level", "skill_level"),
+               ]:
+                   if col in f.columns and k in info and info[k] is not None:
+                       f = f[f[col] == info[k]]
 
-    return f
+                return f
 # =========================
 # FULL COURSE DATABASE
 # =========================
-COURSE_DB = {
-    # ---------- CSE / Data / AI ----------
-    "ML": {
-        "courses": [
-            "Andrew Ng — Machine Learning Specialization (Coursera)",
-            "Krish Naik — Machine Learning Playlist (YouTube)",
-            "fast.ai — Practical Deep Learning for Coders",
-        ],
-        "weeks": [
-            "Python + Numpy/Pandas + basics of ML (Regression, metrics).",
-            "Scikit-learn: Decision Trees, Random Forest, model validation.",
-            "Feature engineering + classification + overfitting control.",
-            "Project: Build an end-to-end ML app and deploy via Streamlit.",
-        ],
-        "projects": [
-            "House Price Predictor",
-            "Student Performance Dashboard + Prediction",
-            "Customer Segmentation (K-Means)",
-        ],
-    },
+            COURSE_DB = {
+               # ---------- CSE / Data / AI ----------
+               "ML": {
+                   "courses": [
+                       "Andrew Ng — Machine Learning Specialization (Coursera)",
+                       "Krish Naik — Machine Learning Playlist (YouTube)",
+                       "fast.ai — Practical Deep Learning for Coders",
+                   ],
+                   "weeks": [
+                       "Python + Numpy/Pandas + basics of ML (Regression, metrics).",
+                       "Scikit-learn: Decision Trees, Random Forest, model validation.",
+                       "Feature engineering + classification + overfitting control.",
+                       "Project: Build an end-to-end ML app and deploy via Streamlit.",
+                   ],
+                   "projects": [
+                       "House Price Predictor",
+                       "Student Performance Dashboard + Prediction",
+                       "Customer Segmentation (K-Means)",
+                   ],
+               },
 
-    "WEB": {
-        "courses": [
-            "The Odin Project (Full Stack foundations)",
-            "FreeCodeCamp — Responsive Web Design",
-            "JavaScript/React Crash Course (YouTube) + practice projects",
-        ],
-        "weeks": [
-            "HTML + CSS (Flex/Grid) + build 1 landing page.",
-            "JavaScript (DOM, ES6, Fetch API) + small interactive UI.",
-            "React basics (components, state, props) + mini app.",
-            "Project: Deploy a portfolio-grade site/app (GitHub Pages/Vercel).",
-        ],
-        "projects": [
-            "Portfolio Website (Dark mode + sections)",
-            "To-do App (LocalStorage)",
-            "Mini E-commerce Product Gallery UI",
-        ],
-    },
-
-    "DSA": {
-        "courses": [
-            "Striver A2Z DSA Sheet (TakeUForward)",
-            "NeetCode 150 (structured problems)",
-            "Abdul Bari — Algorithms (YouTube)",
-        ],
+              "WEB": {
+                  "courses": [
+                      "The Odin Project (Full Stack foundations)",
+                      "FreeCodeCamp — Responsive Web Design",
+                      "JavaScript/React Crash Course (YouTube) + practice projects",
+                  ],
+                  "weeks": [
+                      "HTML + CSS (Flex/Grid) + build 1 landing page.",
+                      "JavaScript (DOM, ES6, Fetch API) + small interactive UI.",
+                      "React basics (components, state, props) + mini app.",
+                      "Project: Deploy a portfolio-grade site/app (GitHub Pages/Vercel).",
+                             ],
+                  "projects": [
+                      "Portfolio Website (Dark mode + sections)",
+                      "To-do App (LocalStorage)",
+                      "Mini E-commerce Product Gallery UI",
+                  ],
+              },
+         
+             "DSA": {
+                 "courses": [
+                     "Striver A2Z DSA Sheet (TakeUForward)",
+                     "NeetCode 150 (structured problems)",
+                     "Abdul Bari — Algorithms (YouTube)",
+                 ],
         "weeks": [
             "Arrays/Strings + time complexity + 20 problems.",
             "Linked List + Stack/Queue + 15 problems.",
