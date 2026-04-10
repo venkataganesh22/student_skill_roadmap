@@ -4,84 +4,522 @@
 
 
 
-
-
-
 import streamlit as st
 import pandas as pd
 import random
 from datetime import date
+ 
+ 
+def show_landing_page():
+ 
+    QUOTES = [
+        ("\"The secret of getting ahead is getting started.\"", "— Mark Twain"),
+        ("\"Don't watch the clock; do what it does. Keep going.\"", "— Sam Levenson"),
+        ("\"You don't have to be great to start, but you have to start to be great.\"", "— Zig Ziglar"),
+        ("\"Push yourself, because no one else is going to do it for you.\"", "— Anonymous"),
+        ("\"Dream big. Start small. Act now.\"", "— Robin Sharma"),
+        ("\"Your future is created by what you do today, not tomorrow.\"", "— Robert Kiyosaki"),
+        ("\"Success is the sum of small efforts repeated day in and day out.\"", "— Robert Collier"),
+        ("\"Believe you can and you're halfway there.\"", "— Theodore Roosevelt"),
+    ]
+ 
+    quote_text, quote_author = random.choice(QUOTES)
+ 
+    # Student images from Unsplash (free, no auth needed)
+    STUDENT_IMAGES = [
+        "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&q=80",  # students studying
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&q=80",  # group working
+        "https://images.unsplash.com/photo-1529390079861-591de354faf5?w=400&q=80",  # student laptop
+    ]
+ 
+    st.markdown(f"""
+    <style>
+ 
+    /* ── HIDE default streamlit chrome on home ── */
+    #MainMenu, footer, header {{ visibility: hidden; }}
+    .block-container {{ padding-top: 0 !important; max-width: 100% !important; }}
+ 
+    /* ── FULL-PAGE WRAPPER ── */
+    .landing {{
+        min-height: 100vh;
+        background-color: #020817;
+        background-image:
+            radial-gradient(ellipse 80% 60% at 15% 55%,  rgba(99,102,241,0.38) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 50% at 85% 25%,  rgba(139,92,246,0.30) 0%, transparent 55%),
+            radial-gradient(ellipse 70% 55% at 55% 90%,  rgba(16,185,129,0.18) 0%, transparent 58%),
+            radial-gradient(ellipse 50% 40% at 80% 75%,  rgba(56,189,248,0.12) 0%, transparent 55%);
+        font-family: 'DM Sans', sans-serif;
+        padding: 0 0 80px;
+    }}
+ 
+    /* ── NAV ── */
+    .nav {{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 48px;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+    }}
+    .nav-logo {{
+        font-family: 'Syne', sans-serif;
+        font-size: 18px;
+        font-weight: 800;
+        background: linear-gradient(135deg, #a5b4fc, #34d399);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }}
+    .nav-badge {{
+        background: rgba(99,102,241,0.15);
+        border: 1px solid rgba(99,102,241,0.30);
+        color: #a5b4fc;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 5px 14px;
+        border-radius: 999px;
+        letter-spacing: 0.06em;
+    }}
+ 
+    /* ── HERO ── */
+    .hero {{
+        text-align: center;
+        padding: 72px 24px 48px;
+        position: relative;
+    }}
+ 
+    .confused-tag {{
+        display: inline-block;
+        background: rgba(251,191,36,0.12);
+        border: 1px solid rgba(251,191,36,0.30);
+        color: #fcd34d;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 6px 18px;
+        border-radius: 999px;
+        margin-bottom: 28px;
+        letter-spacing: 0.04em;
+        animation: fadeSlideDown 0.6s ease both;
+    }}
+ 
+    @keyframes fadeSlideDown {{
+        from {{ opacity:0; transform:translateY(-12px); }}
+        to   {{ opacity:1; transform:translateY(0); }}
+    }}
+ 
+    .hero-h1 {{
+        font-family: 'Syne', sans-serif;
+        font-size: clamp(32px, 6vw, 60px);
+        font-weight: 800;
+        line-height: 1.08;
+        margin-bottom: 22px;
+        animation: fadeSlideDown 0.7s ease 0.1s both;
+    }}
+ 
+    .hero-h1 .line1 {{
+        display: block;
+        background: linear-gradient(135deg, #fff 30%, #c7d2fe);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }}
+ 
+    .hero-h1 .line2 {{
+        display: block;
+        background: linear-gradient(135deg, #a5b4fc, #34d399 70%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }}
+ 
+    .hero-sub {{
+        font-size: 16px;
+        color: #64748b;
+        max-width: 520px;
+        margin: 0 auto 40px;
+        line-height: 1.7;
+        animation: fadeSlideDown 0.7s ease 0.2s both;
+    }}
+ 
+    /* ── QUOTE CARD ── */
+    .quote-card {{
+        max-width: 600px;
+        margin: 0 auto 52px;
+        background: rgba(15,23,42,0.70);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(99,102,241,0.22);
+        border-left: 4px solid #6366f1;
+        border-radius: 16px;
+        padding: 22px 28px;
+        animation: fadeSlideDown 0.7s ease 0.3s both;
+    }}
+ 
+    .quote-text {{
+        font-size: 15px;
+        font-style: italic;
+        color: #e2e8f0;
+        line-height: 1.65;
+        margin-bottom: 10px;
+    }}
+ 
+    .quote-author {{
+        font-size: 12px;
+        color: #6366f1;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+    }}
+ 
+    /* ── STUDENT IMAGES ROW ── */
+    .img-row {{
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        margin: 0 auto 56px;
+        max-width: 860px;
+        padding: 0 24px;
+        animation: fadeSlideDown 0.7s ease 0.35s both;
+    }}
+ 
+    .img-card {{
+        flex: 1;
+        min-width: 0;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.08);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+        position: relative;
+        transition: transform 0.25s;
+    }}
+ 
+    .img-card:hover {{ transform: translateY(-5px); }}
+ 
+    .img-card img {{
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        display: block;
+        filter: brightness(0.82) saturate(1.1);
+    }}
+ 
+    .img-overlay {{
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        background: linear-gradient(transparent, rgba(2,8,23,0.85));
+        padding: 20px 16px 14px;
+    }}
+ 
+    .img-label {{
+        font-family: 'Syne', sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #fff;
+    }}
+ 
+    .img-sub {{
+        font-size: 11px;
+        color: rgba(255,255,255,0.50);
+        margin-top: 2px;
+    }}
+ 
+    /* ── STATS ROW ── */
+    .stats-row {{
+        display: flex;
+        justify-content: center;
+        gap: 32px;
+        margin: 0 auto 56px;
+        flex-wrap: wrap;
+        animation: fadeSlideDown 0.7s ease 0.4s both;
+    }}
+ 
+    .stat-item {{
+        text-align: center;
+    }}
+ 
+    .stat-num {{
+        font-family: 'Syne', sans-serif;
+        font-size: 28px;
+        font-weight: 800;
+        background: linear-gradient(135deg, #a5b4fc, #34d399);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }}
+ 
+    .stat-label {{
+        font-size: 12px;
+        color: #475569;
+        margin-top: 4px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }}
+ 
+    /* ── FEATURES ── */
+    .features {{
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        max-width: 860px;
+        margin: 0 auto 56px;
+        padding: 0 24px;
+        flex-wrap: wrap;
+        animation: fadeSlideDown 0.7s ease 0.45s both;
+    }}
+ 
+    .feat-card {{
+        flex: 1;
+        min-width: 200px;
+        background: rgba(15,23,42,0.65);
+        border: 1px solid rgba(99,102,241,0.18);
+        border-radius: 16px;
+        padding: 20px 18px;
+        backdrop-filter: blur(10px);
+        transition: border-color 0.2s, transform 0.2s;
+    }}
+ 
+    .feat-card:hover {{
+        border-color: rgba(99,102,241,0.45);
+        transform: translateY(-3px);
+    }}
+ 
+    .feat-icon {{
+        font-size: 24px;
+        margin-bottom: 10px;
+    }}
+ 
+    .feat-title {{
+        font-family: 'Syne', sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #e2e8f0;
+        margin-bottom: 6px;
+    }}
+ 
+    .feat-desc {{
+        font-size: 12px;
+        color: #64748b;
+        line-height: 1.6;
+    }}
+ 
+    /* ── CTA BUTTON (Streamlit button override) ── */
+    .cta-wrap {{
+        text-align: center;
+        animation: fadeSlideDown 0.7s ease 0.5s both;
+    }}
+ 
+    div[data-testid="stButton"] > button {{
+        background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: 14px !important;
+        padding: 16px 48px !important;
+        font-family: 'Syne', sans-serif !important;
+        font-size: 16px !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.04em !important;
+        box-shadow: 0 6px 28px rgba(99,102,241,0.45) !important;
+        transition: all 0.2s !important;
+        min-width: 260px !important;
+    }}
+ 
+    div[data-testid="stButton"] > button:hover {{
+        opacity: 0.88 !important;
+        transform: translateY(-3px) !important;
+        box-shadow: 0 12px 36px rgba(99,102,241,0.55) !important;
+    }}
+ 
+    .cta-hint {{
+        font-size: 12px;
+        color: #334155;
+        margin-top: 12px;
+        letter-spacing: 0.03em;
+    }}
+ 
+    </style>
+ 
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+ 
+    <div class="landing">
+ 
+      <!-- NAV -->
+      <div class="nav">
+        <div class="nav-logo">🎯 SkillRoadmap</div>
+        <span class="nav-badge">✦ AI-Powered &nbsp;·&nbsp; Free</span>
+      </div>
+ 
+      <!-- HERO -->
+      <div class="hero">
+        <div class="confused-tag">😕 &nbsp; Not sure where to start?</div>
+ 
+        <h1 class="hero-h1">
+          <span class="line1">Stop feeling lost.</span>
+          <span class="line2">Build your roadmap today.</span>
+        </h1>
+ 
+        <p class="hero-sub">
+          Answer a few simple questions about yourself — we'll generate a
+          personalized 4-week learning plan with projects, resources, and a
+          readiness score. Made for engineering students like you.
+        </p>
+ 
+        <!-- QUOTE -->
+        <div class="quote-card">
+          <div class="quote-text">{quote_text}</div>
+          <div class="quote-author">{quote_author}</div>
+        </div>
+      </div>
+ 
+      <!-- STUDENT IMAGES -->
+      <div class="img-row">
+        <div class="img-card">
+          <img src="{STUDENT_IMAGES[0]}" alt="Students studying together"/>
+          <div class="img-overlay">
+            <div class="img-label">Collaborate &amp; Grow</div>
+            <div class="img-sub">Learn with peers</div>
+          </div>
+        </div>
+        <div class="img-card">
+          <img src="{STUDENT_IMAGES[1]}" alt="Group project work"/>
+          <div class="img-overlay">
+            <div class="img-label">Build Real Projects</div>
+            <div class="img-sub">Portfolio-grade work</div>
+          </div>
+        </div>
+        <div class="img-card">
+          <img src="{STUDENT_IMAGES[2]}" alt="Student on laptop"/>
+          <div class="img-overlay">
+            <div class="img-label">Learn at Your Pace</div>
+            <div class="img-sub">Structured &amp; clear</div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- STATS -->
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-num">14+</div>
+          <div class="stat-label">Learning Tracks</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">4</div>
+          <div class="stat-label">Week Plan</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Free Resources</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Personalised</div>
+        </div>
+      </div>
+ 
+      <!-- FEATURE CARDS -->
+      <div class="features">
+        <div class="feat-card">
+          <div class="feat-icon">📊</div>
+          <div class="feat-title">Readiness Score</div>
+          <div class="feat-desc">Get a breakdown of your academics, skills, routine, and communication.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">🗓️</div>
+          <div class="feat-title">4-Week Plan</div>
+          <div class="feat-desc">A clear week-by-week learning roadmap tailored to your interest and level.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">🧩</div>
+          <div class="feat-title">Skill Gap Analysis</div>
+          <div class="feat-desc">Pick a job role and instantly see what skills you have and what to learn next.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">⬇️</div>
+          <div class="feat-title">Download Roadmap</div>
+          <div class="feat-desc">Save your full roadmap as a Markdown file to keep and revisit anytime.</div>
+        </div>
+      </div>
+ 
+    </div>
+    """, unsafe_allow_html=True)
+ 
+    # CTA button — rendered by Streamlit so it actually works
+    col1, col2, col3 = st.columns([1, 1.4, 1])
+    with col2:
+        if st.button("🚀  Start My Roadmap", use_container_width=True):
+            st.session_state.page = "app"
+            st.rerun()
+ 
+    st.markdown('<p class="cta-hint" style="text-align:center;color:#334155;font-size:12px;margin-top:8px">Takes less than 2 minutes · No signup needed</p>', unsafe_allow_html=True)
+ 
 
-# ---------------- Page config ----------------
-st.set_page_config(page_title="Student Skill Roadmap", layout="centered")
-# ---------------- UI THEME (HTML/CSS) ----------------
-# if "page" not in st.session_state:
-#     st.session_state.page = "home"
-st.markdown("""
-<style>
+# import streamlit as st
+# import pandas as pd
+# import random
+# from datetime import date
 
-/* ===== CONTAINER ===== */
-.block-container {
-    max-width: 1100px;
-    padding-top: 2rem;
-}
+# # ---------------- Page config ----------------
+# st.set_page_config(page_title="Student Skill Roadmap", layout="centered")
+# # ---------------- UI THEME (HTML/CSS) ----------------
+# # if "page" not in st.session_state:
+# #     st.session_state.page = "home"
+# st.markdown("""
+# <style>
 
-/* ===== CARD STYLE ===== */
-.card {
-    background: rgba(30, 41, 59, 0.6);
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-}
+# /* ===== CONTAINER ===== */
+# .block-container {
+#     max-width: 1100px;
+#     padding-top: 2rem;
+# }
 
-/* ===== BUTTONS ===== */
-.stButton > button {
-    border-radius: 10px;
-    padding: 10px 18px;
-    transition: 0.3s;
-}
+# /* ===== CARD STYLE ===== */
+# .card {
+#     background: rgba(30, 41, 59, 0.6);
+#     padding: 20px;
+#     border-radius: 15px;
+#     margin-bottom: 20px;
+#     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+# }
 
-.stButton > button:hover {
-    transform: scale(1.05);
-}
+# /* ===== BUTTONS ===== */
+# .stButton > button {
+#     border-radius: 10px;
+#     padding: 10px 18px;
+#     transition: 0.3s;
+# }
 
-/* ===== METRICS ===== */
-[data-testid="stMetric"] {
-    background: rgba(51, 65, 85, 0.5);
-    padding: 15px;
-    border-radius: 12px;
-}
+# .stButton > button:hover {
+#     transform: scale(1.05);
+# }
 
-/* ===== DOWNLOAD BUTTON ===== */
-.stDownloadButton > button {
-    background: #10b981;
-    color: white;
-    border-radius: 10px;
-}
+# /* ===== METRICS ===== */
+# [data-testid="stMetric"] {
+#     background: rgba(51, 65, 85, 0.5);
+#     padding: 15px;
+#     border-radius: 12px;
+# }
 
-/* ===== OPTIONAL: SELECTBOX RADIUS ===== */
-.stSelectbox div[data-baseweb="select"] {
-    border-radius: 10px;
-}
+# /* ===== DOWNLOAD BUTTON ===== */
+# .stDownloadButton > button {
+#     background: #10b981;
+#     color: white;
+#     border-radius: 10px;
+# }
 
-</style>
-""", unsafe_allow_html=True)
-st.markdown("""
-<style>
+# /* ===== OPTIONAL: SELECTBOX RADIUS ===== */
+# .stSelectbox div[data-baseweb="select"] {
+#     border-radius: 10px;
+# }
 
-/* ===== PREMIUM DARK GRADIENT ===== */
-.stApp {
-    background: linear-gradient(135deg, #020617, #0f172a, #1e293b);
-}
+# </style>
+# """, unsafe_allow_html=True)
+# st.markdown("""
+# <style>
 
-/* Optional: smoother feel */
-.block-container {
-    background: transparent;
-}
+# /* ===== PREMIUM DARK GRADIENT ===== */
+# .stApp {
+#     background: linear-gradient(135deg, #020617, #0f172a, #1e293b);
+# }
 
-</style>
-""", unsafe_allow_html=True)
+# /* Optional: smoother feel */
+# .block-container {
+#     background: transparent;
+# }
+
+# </style>
+# """, unsafe_allow_html=True)  this one
 # if st.session_state.page == "home":
 
 #     quotes = [
