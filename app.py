@@ -444,7 +444,7 @@ def show_landing_page():
     st.markdown(f"""
     <div class="landing">
       <div class="nav">
-        <div class="nav-logo">🎯 SkillRoadmap</div>
+        <div class="nav-logo">🎯  Personalized SkillRoadmap</div>
       </div>
       <div class="hero">
         <div class="confused-tag">😕 &nbsp; Not sure where to start?</div>
@@ -1079,4 +1079,4 @@ st.markdown("<br>", unsafe_allow_html=True)
 with st.expander("📊  Sample Student Dataset (Preview)"):
     st.dataframe(data, use_container_width=True)
 
-st.markdown('<p style="text-align:center;font-size:11px;color:#1e293b;margin-top:32px;">Mini Project · Student Skill Roadmap · Streamlit</p>', unsafe_allow_html=True)
+st.markdown('<p style="text-align:center;font-size:11px;color:#1e293b;margin-top:32px;"> Student Skill Roadmap · Streamlit</p>', unsafe_allow_html=True)
