@@ -7,7 +7,7 @@ from datetime import date
 # PAGE CONFIG  (must be first Streamlit call)
 # ─────────────────────────────────────────────
 st.set_page_config(
-    page_title="SkillRoadmap · AI-Powered",
+    page_title=" Personalized SkillRoadmap",
     page_icon="🎯",
     layout="wide",
 )
@@ -445,7 +445,6 @@ def show_landing_page():
     <div class="landing">
       <div class="nav">
         <div class="nav-logo">🎯 SkillRoadmap</div>
-        <span class="nav-badge">✦ AI-Powered &nbsp;·&nbsp; Free</span>
       </div>
       <div class="hero">
         <div class="confused-tag">😕 &nbsp; Not sure where to start?</div>
