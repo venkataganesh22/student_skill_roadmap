@@ -962,7 +962,10 @@ def load_data():
         })
 
     # Drop only important missing values
-    df = df.dropna(subset=["year", "branch", "interest", "skill_level"])
+    # df = df.dropna(subset=["year", "branch", "interest", "skill_level"])
+    df = df.dropna(subset=["year", "branch", "interest", "skill_level",
+                        "budget_level", "stress_level",
+                        "confusion_level", "communication_level"])
 
     df = df.reset_index(drop=True)
     return df
