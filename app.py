@@ -971,6 +971,10 @@ def load_data():
     return df
 
 data = load_data()
+for col in ["year", "branch", "interest", "skill_level", "budget_level", "stress_level", "confusion_level", "communication_level"]:
+    unique_vals = data[col].unique().tolist()
+    st.write(f"{col}: {unique_vals}")
+st.stop()
 
 st.markdown("""
 <div class="app-header">
