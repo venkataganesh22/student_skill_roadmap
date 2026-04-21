@@ -920,10 +920,28 @@ if st.session_state.page == "home":
 @st.cache_data
 def load_data():
     df = pd.read_csv("student_performance_final.csv")
+    # df.columns = df.columns.str.lower()
+    # df = df.dropna()  # remove rows with any null
+    # df = df[df.apply(lambda row: all(str(v).strip() not in ("", "nan", "none", "null") 
+    #                                  for v in row), axis=1)]
+    # df = df.reset_index(drop=True)
+    # return df
     df.columns = df.columns.str.lower()
-    df = df.dropna()  # remove rows with any null
-    df = df[df.apply(lambda row: all(str(v).strip() not in ("", "nan", "none", "null") 
-                                     for v in row), axis=1)]
+
+    # Normalize hostel column
+    if "hostel" in df.columns:
+        df["hostel"] = df["hostel"].astype(str).str.strip().str.lower()
+
+        df["hostel"] = df["hostel"].replace({
+            "day scholar": "No",
+            "dayscholar": "No",
+            "hosteler": "Yes",
+            "hosteller": "Yes"
+        })
+
+    # Drop only important missing values
+    df = df.dropna(subset=["year", "branch", "interest", "skill_level"])
+
     df = df.reset_index(drop=True)
     return df
 
@@ -956,8 +974,9 @@ conf_lvls    = safe_unique(data, "confusion_level",     ["Low","Medium","High"])
 comm_lvls    = safe_unique(data, "communication_level", ["Poor","Average","Good"])
 
 # Hostel: CSV may use "Day Scholar" / "Hosteler" — normalise to Yes / No for display
-_hostel_raw   = safe_unique(data, "hostel", ["Day Scholar","Hosteler"])
-hostel_display = sorted(set(_hostel_raw))
+# _hostel_raw   = safe_unique(data, "hostel", ["Day Scholar","Hosteler"])
+# hostel_display = sorted(set(_hostel_raw))
+hostel_display = ["Yes", "No"]
 
 st.markdown('<div class="g-card"><div class="g-card-title">📋 Your Profile</div><div class="g-card-sub">Fill your details to generate a personalised roadmap + readiness score + skill gap analysis.</div></div>', unsafe_allow_html=True)
 
