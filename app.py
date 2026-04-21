@@ -724,8 +724,9 @@ def safe_unique(df, col, fallback):
     if col not in df.columns:
         return fallback
     vals = df[col].dropna().unique()
-    # Remove empty strings and None
-    vals = [v for v in vals if v is not None and str(v).strip() != "" and str(v).lower() != "nan"]
+    vals = [v for v in vals 
+            if v is not None 
+            and str(v).strip() not in ("", "nan", "none", "null", "NaN")]
     return sorted(vals) if vals else fallback
 
 def normalize_yes_no(x):
