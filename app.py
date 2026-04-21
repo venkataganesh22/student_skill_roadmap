@@ -928,9 +928,6 @@ def load_data():
     return df
 
 data = load_data()
-st.write("Columns:", data.columns.tolist())
-st.write("Sample:", data.head(3))
-st.stop()
 
 st.markdown("""
 <div class="app-header">
