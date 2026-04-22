@@ -883,19 +883,51 @@ def roadmap_to_markdown(name, info, roadmap):
             if pd.isna(x): return ""
         except Exception: pass
         return str(x)
-    lines = [f"# Personalised Roadmap for {s(name) or 'Student'}", f"**Generated:** {date.today().isoformat()}", "", "## Profile"]
+    
+    lines = [
+        f"# Personalised Roadmap for {s(name) or 'Student'}", 
+        f"**Generated:** {date.today().isoformat()}", 
+        "", 
+        "## Profile"
+    ]
+    
     for k in ["year","branch","interest","skill_level","budget","hostel","study_hours","gpa","stress_level","confusion_level","communication","family_support"]:
         lines.append(f"- **{k.replace('_',' ').title()}**: {s(info.get(k))}")
+    
     lines += ["", "## Data Insight", s(roadmap.get("similar_note","")), "", "## Goals"]
-    for g in roadmap.get("goals",[]): lines.append(f"- {s(g)}")
+    
+    # Corrected: Use standard for loops instead of list comprehensions
+    for g in roadmap.get("goals", []):
+        lines.append(f"- {s(g)}")
+    
     if roadmap.get("risks"):
-        lines += ["", "## Risks"]; [lines.append(f"- {s(r)}") for r in roadmap["risks"]]
-    lines += ["", "## Daily Habits"]; [lines.append(f"- {s(h)}") for h in roadmap.get("habits",[])]
-    lines += ["", "## Action Steps"]; [lines.append(f"- {s(step)}") for step in roadmap.get("steps",[])]
+        lines += ["", "## Risks"]
+        for r in roadmap["risks"]:
+            lines.append(f"- {s(r)}")
+            
+    lines += ["", "## Daily Habits"]
+    for h in roadmap.get("habits", []):
+        lines.append(f"- {s(h)}")
+        
+    lines += ["", "## Action Steps"]
+    for step in roadmap.get("steps", []):
+        lines.append(f"- {s(step)}")
+        
     lines += ["", "## 4-Week Plan"]
-    for w in roadmap.get("week_plan",[]): lines += [f"### {s(w['title'])}"]+[f"- {s(b)}" for b in w.get("bullets",[])] + [""]
-    lines += ["## Suggested Projects"]; [lines.append(f"- {s(p)}") for p in roadmap.get("projects",[])]
-    lines += ["","## Resources"]; [lines.append(f"- {s(r)}") for r in roadmap.get("resources",[])]
+    for w in roadmap.get("week_plan", []):
+        lines += [f"### {s(w['title'])}"]
+        for b in w.get("bullets", []):
+            lines.append(f"- {s(b)}")
+        lines += [""]
+        
+    lines += ["## Suggested Projects"]
+    for p in roadmap.get("projects", []):
+        lines.append(f"- {s(p)}")
+        
+    lines += ["", "## Resources"]
+    for r in roadmap.get("resources", []):
+        lines.append(f"- {s(r)}")
+        
     return "\n".join(lines)
 
 def compute_skill_gap(required, known):
