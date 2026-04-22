@@ -817,9 +817,8 @@ def build_week_plan(interest, skill_level, budget_level):
             ],
         })
     return week_plan, data["courses"], data["projects"]
-
 def generate_structured_roadmap(info, df):
-    steps=[];  risks=[];  habits=[];  goals=[]
+    steps = []; risks = []; habits = []; goals = []
     sim = get_similar_students(df, info)
     if len(sim) >= 5:
         avg_gpa   = sim["gpa"].mean()        if "gpa"         in sim.columns else None
@@ -831,24 +830,38 @@ def generate_structured_roadmap(info, df):
     else:
         sim_note = "Showing a general roadmap based on available data."
 
+    # ── Safely resolve budget (handles both "budget" and "budget_level" keys) ──
+    budget = str(info.get("budget") or info.get("budget_level") or "Low").strip()
+
+    # ── Safely resolve other fields ──
+    gpa           = float(info.get("gpa") or 10)
+    study_hours   = int(info.get("study_hours") or 3)
+    communication = str(info.get("communication") or info.get("communication_level") or "Average").strip()
+    stress_level  = str(info.get("stress_level") or "Medium").strip()
+    confusion     = str(info.get("confusion_level") or "Medium").strip()
+    hostel        = str(info.get("hostel") or "No").strip()
+    family_support= str(info.get("family_support") or "Medium").strip()
+    interest      = str(info.get("interest") or "").strip()
+    skill_level   = str(info.get("skill_level") or "Beginner").strip()
+
     # Goals — always at least 1
-    goals.append(f"Build a clear learning path in {info['interest']}.")
-    if float(info.get("gpa", 10)) < 6.0:
+    goals.append(f"Build a clear learning path in {interest}.")
+    if gpa < 6.0:
         goals.append("Improve academic consistency (target +0.5 GPA next semester).")
-    if int(info.get("study_hours", 3)) < 3:
+    if study_hours < 3:
         goals.append("Increase study hours gradually to a sustainable level.")
-    if str(info.get("communication","Average")) in ("Poor","Low"):
+    if communication in ("Poor", "Low"):
         goals.append("Improve communication through weekly speaking/writing practice.")
 
     # Risks
-    if str(info.get("stress_level","Medium")) == "High" or str(info.get("confusion_level","Medium")) == "High":
+    if stress_level == "High" or confusion == "High":
         risks.append("High stress/confusion detected — use weekly planning + short focused sessions.")
         habits.append("10 min breathing/meditation + 25/5 Pomodoro (2 cycles).")
 
     # Habits — always at least 1
     habits.append(
         "Hostel routine: fixed sleep + fixed study slot + limit late-night scrolling."
-        if str(info.get("hostel","No")) == "Yes"
+        if hostel == "Yes"
         else "Home routine: fixed study slot + communicate study time to family."
     )
     habits.append("Review your week every Sunday — 15 min planning saves hours of confusion.")
@@ -856,33 +869,34 @@ def generate_structured_roadmap(info, df):
     # Steps — always at least 2
     steps.append(
         "Get external support: mentor/teacher/peer group + online communities."
-        if str(info.get("family_support","Medium")) == "Low"
+        if family_support == "Low"
         else "Use family support: share weekly goals and ask for accountability."
     )
     steps.append(
         "Use free resources first + build projects (proof > certificates)."
-        if str(info.get("budget","Low")) == "Low"
+        if budget == "Low"
         else "Pick 1 high-quality paid course OR mentorship for faster progress."
     )
-    if int(info.get("study_hours", 3)) < 3:
+    if study_hours < 3:
         steps.append("Study plan: add +30 mins/week until you reach 3–4 hours/day.")
-    if float(info.get("gpa", 10)) < 6.0:
+    if gpa < 6.0:
         steps.append("Academics: revise daily + weekly tests + focus on weak subjects.")
-    if str(info.get("communication","Average")) in ("Poor","Low"):
+    if communication in ("Poor", "Low"):
         steps.append("Communication: 2 short talks/week + write 1 summary/day (5–7 lines).")
 
     week_plan, course_resources, course_projects = build_week_plan(
-        info["interest"], info["skill_level"], info["budget"]
+        interest, skill_level, budget
     )
+
     return {
         "similar_note": sim_note,
-        "goals":    goals,
-        "risks":    risks,
-        "habits":   habits,
-        "steps":    steps,
-        "week_plan": week_plan,
-        "resources": course_resources,
-        "projects":  course_projects,
+        "goals":    [x for x in goals  if x],
+        "risks":    [x for x in risks  if x],
+        "habits":   [x for x in habits if x],
+        "steps":    [x for x in steps  if x],
+        "week_plan":  week_plan,
+        "resources":  course_resources,
+        "projects":   course_projects,
     }
 
 def readiness_breakdown(info):
