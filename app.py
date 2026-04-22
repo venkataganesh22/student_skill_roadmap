@@ -318,8 +318,6 @@ div[data-testid="stButton"] > button:hover {
 /* ════════════════════════════════════════
    SELECTBOX — ALWAYS VISIBLE (BUG FIX)
    ════════════════════════════════════════ */
-
-/* Outer shell — always shows indigo border */
 div[data-baseweb="select"] > div {
   background: rgba(15,23,42,0.88) !important;
   border: 1.5px solid rgba(99,102,241,0.55) !important;
@@ -327,32 +325,22 @@ div[data-baseweb="select"] > div {
   color: #e2e8f0 !important;
   transition: border-color 0.2s, box-shadow 0.2s !important;
 }
-
-/* Hover */
 div[data-baseweb="select"] > div:hover {
   border-color: rgba(99,102,241,0.90) !important;
   box-shadow: 0 0 0 3px rgba(99,102,241,0.15) !important;
 }
-
-/* Open / focused */
 div[data-baseweb="select"] > div:focus-within {
   border-color: #6366f1 !important;
   box-shadow: 0 0 0 3px rgba(99,102,241,0.22) !important;
 }
-
-/* Selected value text */
 div[data-baseweb="select"] span,
 div[data-baseweb="select"] div[class*="ValueContainer"] {
   color: #e2e8f0 !important;
   background: transparent !important;
 }
-
-/* Dropdown arrow */
 div[data-baseweb="select"] svg {
   fill: #a5b4fc !important;
 }
-
-/* Popup menu container */
 ul[data-baseweb="menu"],
 div[data-baseweb="popover"] > div,
 div[role="listbox"] {
@@ -362,8 +350,6 @@ div[role="listbox"] {
   box-shadow: 0 12px 40px rgba(0,0,0,0.60) !important;
   padding: 6px !important;
 }
-
-/* Each option row */
 li[role="option"] {
   background: transparent !important;
   color: #cbd5e1 !important;
@@ -372,20 +358,15 @@ li[role="option"] {
   padding: 10px 14px !important;
   transition: background 0.15s !important;
 }
-
 li[role="option"]:hover {
   background: rgba(99,102,241,0.22) !important;
   color: #fff !important;
 }
-
-/* Selected option highlight */
 li[role="option"][aria-selected="true"] {
   background: rgba(99,102,241,0.30) !important;
   color: #c7d2fe !important;
   font-weight: 600 !important;
 }
-
-/* Placeholder text */
 div[data-baseweb="select"] input::placeholder {
   color: #475569 !important;
 }
@@ -423,7 +404,6 @@ div[data-baseweb="select"] input::placeholder {
   border-color: #6366f1 !important;
   box-shadow: 0 0 0 3px rgba(99,102,241,0.22) !important;
 }
-/* Stepper +/- buttons */
 .stNumberInput button {
   background: rgba(99,102,241,0.12) !important;
   border: 1px solid rgba(99,102,241,0.35) !important;
@@ -479,8 +459,6 @@ div[data-baseweb="tag"] {
 }
 div[data-baseweb="tag"] span { color: #c7d2fe !important; }
 div[data-baseweb="tag"] button svg { fill: #a5b4fc !important; }
-
-/* multiselect outer shell */
 div[data-testid="stMultiSelect"] div[data-baseweb="select"] > div {
   background: rgba(15,23,42,0.88) !important;
   border: 1.5px solid rgba(99,102,241,0.55) !important;
@@ -725,8 +703,8 @@ def safe_unique(df, col, fallback):
         return fallback
     try:
         vals = df[col].dropna().unique().tolist()
-        vals = [v for v in vals 
-                if v is not None 
+        vals = [v for v in vals
+                if v is not None
                 and str(v).strip() not in ("", "nan", "none", "null", "NaN")]
         return sorted(vals, key=lambda x: str(x)) if vals else fallback
     except Exception:
@@ -768,35 +746,16 @@ def level_to_bucket(skill_level: str):
     return "Advanced"
 
 def get_similar_students(df, info):
-    # f = df.copy()
-    # # Normalise hostel column so "Day Scholar" → "No", "Hosteler" → "Yes"
-    # if "hostel" in f.columns:
-    #     f["hostel"] = f["hostel"].apply(lambda x: str(x).strip())
-    # for k, col in [("year","year"),("branch","branch"),("interest","interest"),("skill_level","skill_level")]:
-    #     if col in f.columns and k in info and info[k] is not None:
-    #         f = f[f[col] == info[k]]
-    # # Also filter hostel if present (info["hostel"] is already "Yes"/"No")
-    # if "hostel" in f.columns and "hostel" in info and info["hostel"] is not None:
-    #     f = f[f["hostel"] == info["hostel"]]
-    # return f
     f = df.copy()
-
-    # Step 1: Try strict match
     strict = f[
         (f["branch"] == info["branch"]) &
         (f["interest"] == info["interest"])
     ]
-
-    # Step 2: If too small, relax conditions
     if len(strict) >= 5:
         return strict
-
     relaxed = f[f["branch"] == info["branch"]]
-
     if len(relaxed) >= 5:
         return relaxed
-
-    # Step 3: fallback → return full dataset
     return f
 
 def build_week_plan(interest, skill_level, budget_level):
@@ -817,6 +776,10 @@ def build_week_plan(interest, skill_level, budget_level):
             ],
         })
     return week_plan, data["courses"], data["projects"]
+
+# ─────────────────────────────────────────────
+# ✅ FIXED FUNCTION — only change from original
+# ─────────────────────────────────────────────
 def generate_structured_roadmap(info, df):
     steps = []; risks = []; habits = []; goals = []
     sim = get_similar_students(df, info)
@@ -830,17 +793,15 @@ def generate_structured_roadmap(info, df):
     else:
         sim_note = "Showing a general roadmap based on available data."
 
-    # ── Safely resolve budget (handles both "budget" and "budget_level" keys) ──
-    budget = str(info.get("budget") or info.get("budget_level") or "Low").strip()
-
-    # ── Safely resolve other fields ──
+    # ── Safely resolve all fields (fixes budget key mismatch + any None values) ──
+    budget        = str(info.get("budget") or info.get("budget_level") or "Low").strip()
     gpa           = float(info.get("gpa") or 10)
     study_hours   = int(info.get("study_hours") or 3)
     communication = str(info.get("communication") or info.get("communication_level") or "Average").strip()
     stress_level  = str(info.get("stress_level") or "Medium").strip()
     confusion     = str(info.get("confusion_level") or "Medium").strip()
     hostel        = str(info.get("hostel") or "No").strip()
-    family_support= str(info.get("family_support") or "Medium").strip()
+    family_support = str(info.get("family_support") or "Medium").strip()
     interest      = str(info.get("interest") or "").strip()
     skill_level   = str(info.get("skill_level") or "Beginner").strip()
 
@@ -956,31 +917,18 @@ if st.session_state.page == "home":
 @st.cache_data
 def load_data():
     df = pd.read_csv("student_performance_final.csv")
-    # df.columns = df.columns.str.lower()
-    # df = df.dropna()  # remove rows with any null
-    # df = df[df.apply(lambda row: all(str(v).strip() not in ("", "nan", "none", "null") 
-    #                                  for v in row), axis=1)]
-    # df = df.reset_index(drop=True)
-    # return df
     df.columns = df.columns.str.lower()
-
-    # Normalize hostel column
     if "hostel" in df.columns:
         df["hostel"] = df["hostel"].astype(str).str.strip().str.lower()
-
         df["hostel"] = df["hostel"].replace({
             "day scholar": "No",
-            "dayscholar": "No",
-            "hosteler": "Yes",
-            "hosteller": "Yes"
+            "dayscholar":  "No",
+            "hosteler":    "Yes",
+            "hosteller":   "Yes"
         })
-
-    # Drop only important missing values
-    # df = df.dropna(subset=["year", "branch", "interest", "skill_level"])
     df = df.dropna(subset=["year", "branch", "interest", "skill_level",
-                        "budget_level", "stress_level",
-                        "confusion_level", "communication_level"])
-
+                            "budget_level", "stress_level",
+                            "confusion_level", "communication_level"])
     df = df.reset_index(drop=True)
     return df
 
@@ -1003,14 +951,7 @@ with col_back:
         st.rerun()
 
 st.markdown("<br>", unsafe_allow_html=True)
-# years        = safe_unique(data, "year",                [1,2,3,4])
-# branches     = safe_unique(data, "branch",              ["CSE","IT","ECE","EEE","MECH"])
-# interests    = safe_unique(data, "interest",            ["AI/ML","Web Development","Competitive Coding","Cybersecurity","IoT"])
-# budgets      = safe_unique(data, "budget_level",        ["Low","Medium","High"])
-# skill_levels = safe_unique(data, "skill_level",         ["Beginner","Intermediate","Advanced"])
-# stress_lvls  = safe_unique(data, "stress_level",        ["Low","Medium","High"])
-# conf_lvls    = safe_unique(data, "confusion_level",     ["Low","Medium","High"])
-# comm_lvls    = safe_unique(data, "communication_level", ["Poor","Average","Good"])
+
 years        = [1, 2, 3, 4]
 branches     = ["CSE", "ECE", "EEE", "IT", "Mechanical"]
 interests    = sorted(data["interest"].dropna().unique().tolist())
@@ -1019,10 +960,6 @@ skill_levels = ["Beginner", "Intermediate"]
 stress_lvls  = ["High", "Low", "Medium"]
 conf_lvls    = ["High", "Low", "Medium"]
 comm_lvls    = ["Average", "Good", "Poor"]
-
-# Hostel: CSV may use "Day Scholar" / "Hosteler" — normalise to Yes / No for display
-# _hostel_raw   = safe_unique(data, "hostel", ["Day Scholar","Hosteler"])
-# hostel_display = sorted(set(_hostel_raw))
 hostel_display = ["Yes", "No"]
 
 st.markdown('<div class="g-card"><div class="g-card-title">📋 Your Profile</div><div class="g-card-sub">Fill your details to generate a personalised roadmap + readiness score + skill gap analysis.</div></div>', unsafe_allow_html=True)
